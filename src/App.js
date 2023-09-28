@@ -12,11 +12,21 @@ function App() {
   const favMovies = useSelector((store) => store.favs);
 
   const addList = (id) => {
-    dispatch(addToList(id));
+    if (!favMovies.find((favMov) => favMov.id === movie[sira].id)) {
+      dispatch(addToList(id));
+    } else {
+      alert("Movie already added");
+    }
   };
 
   function sonrakiFilm() {
     setSira(sira + 1);
+  }
+  function previous() {
+    setSira(sira - 1);
+  }
+  function backToZero() {
+    setSira(sira * 0);
   }
 
   return (
@@ -43,12 +53,30 @@ function App() {
           <Movie sira={sira} />
 
           <div className="flex gap-3 justify-end py-3">
-            <button
-              onClick={sonrakiFilm}
-              className="select-none px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
-            >
-              Sıradaki
-            </button>
+            {sira >= 1 && (
+              <>
+                <button
+                  onClick={backToZero}
+                  className="select-none px-4 py-2 border bg-cyan-500 border-cyan-700 text-black  hover:text-black"
+                >
+                  Başa Dön
+                </button>
+                <button
+                  onClick={previous}
+                  className="select-none px-4 py-2 border  border-red-700 text-red-700 hover:border-red-700 hover:text-black"
+                >
+                  Önceki
+                </button>
+              </>
+            )}
+            {sira < 19 && (
+              <button
+                onClick={sonrakiFilm}
+                className="select-none px-4 py-2 border border-emerald-500 text-emerald-500 hover:border-emerald-500 hover:text-black"
+              >
+                Sıradaki
+              </button>
+            )}
             <button
               className="select-none px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white"
               onClick={() => addList(movie[sira])}
